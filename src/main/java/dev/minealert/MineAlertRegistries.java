@@ -68,7 +68,7 @@ public class MineAlertRegistries extends MineAlertPlugin implements PlatformInfo
 
     @Override
     public String getVersion() {
-        return "1.10";
+        return "1.11";
     }
 
 
