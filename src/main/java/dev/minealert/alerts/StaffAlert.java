@@ -1,6 +1,7 @@
 package dev.minealert.alerts;
 
 import com.google.common.collect.Lists;
+import dev.minealert.file.OreSettingsFile;
 import dev.minealert.file.lang.Lang;
 import dev.minealert.utils.MessageUtils;
 import org.bukkit.entity.Player;
@@ -11,7 +12,7 @@ import java.util.List;
 public class StaffAlert {
 
     private static StaffAlert instance = null;
-    private List<String> staffAlertList = Collections.synchronizedList(Lists.newLinkedList());
+    private final List<String> staffAlertList = Collections.synchronizedList(Lists.newLinkedList());
 
     public static StaffAlert getInstance() {
         if (instance == null) instance = new StaffAlert();
@@ -27,6 +28,21 @@ public class StaffAlert {
             removeStaffMember(name);
             MessageUtils.sendFormattedMessage(Lang.PREFIX.toConfigString() + Lang.NOTIFY_DISABLED.toConfigString(), staffMember);
         }
+    }
+
+    public void enableAlertOnJoin(Player staffMember) {
+        final String name = staffMember.getName();
+        AbstractAlertModule.getModule(OreSettingsFile.class).ifPresent((file) -> {
+
+            if (!file.getFileConfiguration().getBoolean("alert.turn-on-join")) {
+                return;
+            }
+
+            if (staffMember.hasPermission("minealert.notify")) {
+                addStaffMember(name);
+                MessageUtils.sendFormattedMessage(Lang.PREFIX.toConfigString() + Lang.NOTIFY_ENABLED.toConfigString(), staffMember);
+            }
+        });
     }
 
     private void addStaffMember(String name) {

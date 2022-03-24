@@ -3,6 +3,7 @@ package dev.minealert.listeners;
 import com.google.common.util.concurrent.Atomics;
 import dev.minealert.MineAlert;
 import dev.minealert.alerts.AbstractAlertModule;
+import dev.minealert.alerts.StaffAlert;
 import dev.minealert.database.DatabaseUUIDTool;
 import dev.minealert.database.SQLUtils;
 import dev.minealert.database.cache.CacheSystem;
@@ -26,7 +27,8 @@ public class ConnectionListener implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         final Player player = e.getPlayer();
         CompletableFuture.runAsync(() -> {
-            for(int i = 0; i < MineDataUtils.getModuleAlertList().getSize(); i++){
+            StaffAlert.getInstance().enableAlertOnJoin(player);
+            for (int i = 0; i < MineDataUtils.getModuleAlertList().getSize(); i++) {
                 Class<? extends AbstractAlertModule> alertClasses = MineDataUtils.getModuleAlertList().getElement(i);
                 AbstractModuleLoader.getModule(alertClasses).ifPresent(alert -> alert.callInit(player));
             }

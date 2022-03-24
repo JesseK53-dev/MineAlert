@@ -19,6 +19,7 @@ public class OreSettingsFile extends AbstractFile {
         if (isFileNotEmpty()) return;
         final FileConfiguration config = getFileConfiguration();
         config.set("interval", 300);
+        config.set("alert.turn-on-join", false);
         config.set("alert.ancientdebris-enable", true);
         config.set("alert.ancientdebris-amount", 5);
         config.set("alert.coal-enable", true);
